@@ -1,4 +1,5 @@
 import pygame
+import random
 
 # Установка некоторых параметров
 WIDTH = 800
@@ -8,6 +9,8 @@ FPS = 30
 PLAYER_H_SPEED = 5
 PLAYER_V_SPEED = 3
 
+ENEMY_SPEED = 5
+
 
 # Установка цветов
 WHITE = (255, 255, 255)
@@ -15,6 +18,7 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
+# Класс "Игрок"
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() # замена pygame.sprite.Sprite.__init__(self)
@@ -31,3 +35,31 @@ class Player(pygame.sprite.Sprite):
             self.rect.y += PLAYER_V_SPEED
         if keys[pygame.K_DOWN] and self.rect.bottom > 0:
             self.rect.y -= PLAYER_V_SPEED
+
+
+# Класс "Противник"
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        #self.image = pygame.image.load("") не нашел картинку
+        self.image = pygame.Surface((50, 50))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect(center=(random.randint(0, WIDTH), 0))
+
+    def update(self):
+        self.rect.y += ENEMY_SPEED
+        self.rect.x = random.randint(0, WIDTH)
+        self.rect.y = random.randint(-100, -40)
+
+
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("World of tanks")
+clock = pygame.time.Clock()
+all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
+        
+
+        
+pygame.quit
