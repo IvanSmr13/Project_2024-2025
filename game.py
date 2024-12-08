@@ -62,15 +62,22 @@ clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 player = Player()
-all_sprites.add(Player)
+all_sprites.add(player)
 
 
 # Фон игры
-background_image = pygame.image.load('for_game.jpg')
-while True:
-    screen.blit(background_image, (0, 0))
-    pygame.display.update()
-    clock.tick(60)
+
+#background_image = pygame.image.load('for_game.jpg')
+#while True:
+    #screen.blit(background_image, (0, 0))
+    #pygame.display.update()
+   # clock.tick(60)
+
+# Создание противников
+for _ in range(5):  
+    enemy = Enemy()
+    all_sprites.add(enemy)
+    enemies.add(enemy)
 
 
 # Сама игра
@@ -89,8 +96,34 @@ while running:
     if pygame.sprite.spritecollide(player, enemies, False):
             game_over = True
 
-all_sprites.draw(screen)
 
+
+if game_over:
+        font = pygame.font.Font(None, 74)
+        text = font.render("GAME OVER", True, WHITE)
+        screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+
+        restart_text = font.render("Press R to Restart", True, WHITE)
+        screen.blit(restart_text, (WIDTH // 2 - restart_text.get_width() // 2, HEIGHT // 2 + 50))
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_r]:
+            game_over = False
+            for sprite in all_sprites:
+                sprite.kill()
+            player = Player()
+            all_sprites.add(player)
+            for _ in range(5):
+                enemy = Enemy()
+                all_sprites.add(enemy)
+                enemies.add(enemy)
+
+        
+
+screen.fill(GREEN)
+
+all_sprites.draw(screen)
+pygame.display.flip()
 
 
 
